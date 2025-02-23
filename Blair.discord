@@ -1,0 +1,54 @@
+-- Bot login
+on loginBot()
+    display dialog "Bot is logging in..." buttons {"OK"} default button 1
+    delay 2
+    display dialog "Logged in as Bot (BotID: 123456789)" buttons {"OK"} default button 1
+end loginBot
+
+-- Command handling
+on handleCommands(commandName)
+    if commandName is "ping" then
+        display dialog "Pong! The bot is alive!" buttons {"OK"} default button 1
+    else if commandName is "help" then
+        display dialog "Showing help commands..." buttons {"OK"} default button 1
+        display dialog "Available Commands: 'ping', 'help', 'info'" buttons {"OK"} default button 1
+    else if commandName is "info" then
+        display dialog "Bot Version: 1.0\nStatus: Online" buttons {"OK"} default button 1
+    else
+        display dialog "Unknown command: " & commandName buttons {"OK"} default button 1
+    end if
+end handleCommands
+
+-- Event handling
+on handleEvent(eventType)
+    if eventType is "ready" then
+        display dialog "Bot is ready and listening for events!" buttons {"OK"} default button 1
+    else if eventType is "interaction" then
+        display dialog "Bot interaction received!" buttons {"OK"} default button 1
+    else
+        display dialog "Unknown event: " & eventType buttons {"OK"} default button 1
+    end if
+end handleEvent
+
+-- Bot shutdown
+on shutdownBot()
+    display dialog "Bot is shutting down..." buttons {"OK"} default button 1
+    delay 2
+    display dialog "Bot has been shut down successfully!" buttons {"OK"} default button 1
+end shutdownBot
+
+-- Main bot tasks
+loginBot()
+
+-- Handle commands
+handleCommands("ping")
+handleCommands("help")
+handleCommands("info")
+handleCommands("unknownCommand")
+
+-- Handle events
+handleEvent("ready")
+handleEvent("interaction")
+
+-- Shutdown bot
+shutdownBot()
