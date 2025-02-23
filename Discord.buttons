@@ -1,0 +1,49 @@
+set embeds to {"Page 1: Setup commands", "Page 2: Config commands", "Page 3: Channel Management", "Page 4: Other commands"} -- Your list of embeds (or pages)
+set numberOfPages to count of embeds
+set currentIndex to 1 -- Start at the first page
+set cancelStatus to false
+
+-- Function to display the current embed
+on showEmbed(index)
+    set currentEmbed to item index of embeds
+    display dialog currentEmbed buttons {"Previous", "Next", "Skip to...", "Cancel"} default button "Next"
+    return button returned of result
+end showEmbed
+
+-- Main loop for handling pagination
+repeat until cancelStatus
+    -- Show current page embed
+    set userAction to showEmbed(currentIndex)
+    
+    if userAction is "Previous" then
+        -- Go to previous page
+        if currentIndex > 1 then
+            set currentIndex to currentIndex - 1
+        else
+            set currentIndex to numberOfPages
+        end if
+    else if userAction is "Next" then
+        -- Go to next page
+        if currentIndex < numberOfPages then
+            set currentIndex to currentIndex + 1
+        else
+            set currentIndex to 1
+        end if
+    else if userAction is "Skip to..." then
+        -- Skip to a specific page
+        set skipPage to text returned of (display dialog "Enter page number to skip to:" default answer "")
+        
+        if skipPage is not "" then
+            set skipPage to (skipPage as integer)
+            if skipPage > 0 and skipPage ≤ numberOfPages then
+                set currentIndex to skipPage
+            else
+                display dialog "Invalid page number!" buttons {"OK"} default button "OK"
+            end if
+        end if
+    else if userAction is "Cancel" then
+        -- Exit pagination
+        set cancelStatus to true
+        display dialog "Pagination cancelled!" buttons {"OK"} default button "OK"
+    end if
+end repeat
