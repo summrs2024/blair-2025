@@ -1,0 +1,87 @@
+-- Simulated Data
+set voicemasterData to {}
+set channelsData to {}
+
+-- Function to simulate saving data to files
+on saveData()
+    display dialog "Voicemaster data has been saved." buttons {"OK"} default button 1
+end saveData
+
+on saveChannelsData()
+    display dialog "Channel data has been saved." buttons {"OK"} default button 1
+end saveChannelsData
+
+-- Function to simulate checking permissions
+on checkPermissions(permission)
+    if permission is "MANAGE_GUILD" then
+        return true
+    else
+        return false
+    end if
+end checkPermissions
+
+-- Function to simulate creating a channel
+on createChannel(channelName)
+    display dialog "Created new channel: " & channelName buttons {"OK"} default button 1
+end createChannel
+
+-- Main function to simulate commands
+on runCommand(command, args)
+    if command is "setup" then
+        if not (checkPermissions("MANAGE_GUILD")) then
+            display dialog "You do not have the required permissions to use this command" buttons {"OK"} default button 1
+        else
+            if voicemasterData is not {} then
+                display dialog "Voicemaster is already set up for this server." buttons {"OK"} default button 1
+            else
+                -- Simulate setup
+                display dialog "Setting up Voicemaster..." buttons {"OK"} default button 1
+                createChannel("Voicemaster Category")
+                createChannel("Interface Channel")
+                createChannel("Join to create")
+
+                set voicemasterData to {categoryID: "category_1", channelID: "voice_1", interfaceChannelID: "text_1"}
+                saveData()
+                display dialog "Voicemaster has been set up successfully." buttons {"OK"} default button 1
+            end if
+        end if
+
+    else if command is "remove" then
+        if not (checkPermissions("MANAGE_GUILD")) then
+            display dialog "You do not have the required permissions to use this command" buttons {"OK"} default button 1
+        else
+            if voicemasterData is {} then
+                display dialog "Voicemaster is not set up for this server. Use 'voicemaster setup' first." buttons {"OK"} default button 1
+            else
+                -- Simulate remove
+                display dialog "Removing Voicemaster..." buttons {"OK"} default button 1
+                set voicemasterData to {}
+                saveData()
+                display dialog "Voicemaster has been removed." buttons {"OK"} default button 1
+            end if
+        end if
+
+    else if command is "config" then
+        if not (checkPermissions("MANAGE_GUILD")) then
+            display dialog "You do not have the required permissions to use this command" buttons {"OK"} default button 1
+        else
+            if voicemasterData is {} then
+                display dialog "Voicemaster is not set up for this server. Use 'voicemaster setup' first." buttons {"OK"} default button 1
+            else
+                -- Simulate viewing the configuration
+                display dialog "Voicemaster is set up with category ID: " & (categoryID of voicemasterData) buttons {"OK"} default button 1
+            end if
+
+    else
+        display dialog "Unknown command. Please use one of the following commands: setup, remove, config" buttons {"OK"} default button 1
+    end if
+end runCommand
+
+-- Simulate running the 'setup' command
+runCommand("setup", {})
+
+-- Simulate running the 'config' command
+runCommand("config", {})
+
+-- Simulate running the 'remove' command
+runCommand("remove", {})
